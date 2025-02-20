@@ -31,7 +31,7 @@ export default function ProfileSection() {
     if (error) return <p className="text-red-500">{error.message}</p>;
 
     return (
-        <section className="flex flex-col items-center text-center p-6 bg-white rounded-lg w-80">
+        <section className="flex flex-col items-center text-center py-6 bg-white rounded-lg w-80">
             <img
                 className="w-24 h-24 rounded-full border-4 border-white shadow-md"
                 src={user?.avatar_url || "https://via.placeholder.com/96"}

@@ -7,9 +7,11 @@ export default function Home() {
 
     <div>
       <Header />
-      <div className="flex ">
-        <ProfileSection />
-        <GitHubRepositories />
+      <div className="flex justify-center">
+        <div className="max-w-[1200px] w-full flex">
+          <ProfileSection />
+          <GitHubRepositories />
+        </div>
       </div>
     </div>
   );

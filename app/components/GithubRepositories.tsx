@@ -38,7 +38,7 @@ export default function GitHubRepositories() {
 
     return (
         <div className="p-6 bg-white">
-            <div className="flex items-center space-x-6 border-b pb-3">
+            <div className="flex items-center space-x-6 border-b pb-3 ">
                 <button
                     onClick={() => setActiveTab("repos")}
                     className={`flex items-center space-x-1 ${activeTab === "repos" ? "font-semibold border-b-2 border-red-500" : "text-gray-500"}`}
