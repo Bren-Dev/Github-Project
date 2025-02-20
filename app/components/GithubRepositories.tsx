@@ -1,5 +1,4 @@
 'use client'
-
 import { useEffect, useState } from "react";
 import { useGitHubRepos } from "../hooks/UseGithubRepos";
 
@@ -7,9 +6,13 @@ export default function GitHubRepositories() {
     const username = "Bren-Dev";
     const { repos, loading, error } = useGitHubRepos(username);
     const { repos: starredRepos, loading: loadingStarred, error: errorStarred } = useGitHubRepos(username, true);
+
     const [activeTab, setActiveTab] = useState<"repos" | "starred">("repos");
     const [selectedLanguage, setSelectedLanguage] = useState<string | null>("All");
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [selectedType, setSelectedType] = useState<string>("All");
+    const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
+    const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
+
     const [languages, setLanguages] = useState<string[]>(["All"]);
 
     useEffect(() => {
@@ -19,9 +22,19 @@ export default function GitHubRepositories() {
         setLanguages(["All", ...uniqueLanguages]);
     }, [repos]);
 
-    const filteredRepos = selectedLanguage && selectedLanguage !== "All"
-        ? repos.filter(repo => repo.language === selectedLanguage)
-        : repos;
+    const typeOptions = ["All", "Sources", "Forks", "Archived", "Mirrors"];
+
+    const filteredRepos = repos.filter(repo => {
+        const matchesLanguage = selectedLanguage === "All" || repo.language === selectedLanguage;
+        const matchesType =
+            selectedType === "All" ||
+            (selectedType === "Sources" && !repo.fork) ||
+            (selectedType === "Forks" && repo.fork) ||
+            (selectedType === "Archived" && repo.archived) ||
+            (selectedType === "Mirrors" && repo.mirror_url);
+
+        return matchesLanguage && matchesType;
+    });
 
     return (
         <div className="p-6 bg-white">
@@ -47,30 +60,54 @@ export default function GitHubRepositories() {
                     placeholder="Search Here"
                     className="border px-4 py-2 w-full max-w-md rounded-md"
                 />
-                <div className="flex space-x-3">
-                    <button className="bg-blue-600 text-white px-4 py-2 rounded-md">Type</button>
+                <div className="flex space-x-3 relative">
+                    <div className="relative">
+                        <button className="bg-blue-600 text-white px-4 py-2 rounded-md"
+                            onClick={() => setIsTypeDropdownOpen(!isTypeDropdownOpen)}>
+                            Type
+                        </button>
 
-                    <button className="bg-blue-600 text-white px-4 py-2 rounded-md"
-                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-                        Language
-                    </button>
+                        {isTypeDropdownOpen && (
+                            <div className="absolute mt-2 w-48 bg-white border shadow-md rounded-md">
+                                <ul>
+                                    {typeOptions.map((type) => (
+                                        <li key={type}
+                                            className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${selectedType === type ? 'font-semibold' : ''}`}
+                                            onClick={() => {
+                                                setSelectedType(type);
+                                                setIsTypeDropdownOpen(false);
+                                            }}>
+                                            {selectedType === type ? "✔ " : ""}{type}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
 
-                    {isDropdownOpen && (
-                        <div className="absolute mt-2 w-48 bg-white border shadow-md rounded-md">
-                            <ul>
-                                {languages.map((lang) => (
-                                    <li key={lang}
-                                        className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${selectedLanguage === lang ? 'font-semibold' : ''}`}
-                                        onClick={() => {
-                                            setSelectedLanguage(lang);
-                                            setIsDropdownOpen(false);
-                                        }}>
-                                        {selectedLanguage === lang ? "✔ " : ""}{lang}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
+                    <div className="relative">
+                        <button className="bg-blue-600 text-white px-4 py-2 rounded-md"
+                            onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}>
+                            Language
+                        </button>
+
+                        {isLanguageDropdownOpen && (
+                            <div className="absolute mt-2 w-48 bg-white border shadow-md rounded-md">
+                                <ul>
+                                    {languages.map((lang) => (
+                                        <li key={lang}
+                                            className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${selectedLanguage === lang ? 'font-semibold' : ''}`}
+                                            onClick={() => {
+                                                setSelectedLanguage(lang);
+                                                setIsLanguageDropdownOpen(false);
+                                            }}>
+                                            {selectedLanguage === lang ? "✔ " : ""}{lang}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
