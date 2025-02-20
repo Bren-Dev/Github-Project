@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from "react";
+import useSWR from "swr";
 
 interface GitHubRepo {
     id: number;
@@ -10,43 +10,31 @@ interface GitHubRepo {
     description: string | null;
     stargazers_count: number;
     forks_count: number;
+    language: string | null;
 }
 
 const GITHUB_TOKEN = "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";
 
+const fetcher = (url: string) =>
+    fetch(url, {
+        headers: { Authorization: `token ${GITHUB_TOKEN}` },
+    }).then((res) => {
+        if (!res.ok) throw new Error("Erro ao buscar repositórios");
+        return res.json();
+    });
+
 export function useGitHubRepos(username: string, starred = false) {
-    const [repos, setRepos] = useState<GitHubRepo[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const url = starred
+        ? `https://api.github.com/users/${username}/starred`
+        : `https://api.github.com/users/${username}/repos`;
 
-    useEffect(() => {
-        if (!username) return;
+    const { data, error, isLoading } = useSWR<GitHubRepo[]>(username ? url : null, fetcher, {
+        revalidateOnFocus: true,
+    });
 
-        const fetchRepos = async () => {
-            try {
-                const headers = {
-                    Authorization: `token ${GITHUB_TOKEN}`,
-                };
-
-                const url = starred
-                    ? `https://api.github.com/users/${username}/starred`
-                    : `https://api.github.com/users/${username}/repos`;
-
-                const response = await fetch(url, { headers });
-
-                if (!response.ok) throw new Error("Erro ao buscar repositórios");
-
-                const data: GitHubRepo[] = await response.json();
-                setRepos(data);
-            } catch (err) {
-                setError((err as Error).message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchRepos();
-    }, [username, starred]);
-
-    return { repos, loading, error };
+    return {
+        repos: data || [],
+        loading: isLoading,
+        error: error?.message || null,
+    };
 }
