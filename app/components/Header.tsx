@@ -6,7 +6,7 @@ export default function Header() {
             <div className="flex max-w-[1200px] w-full items-center">
                 <Image
                     src="/logoGithub.svg"
-                    alt="Logo da empresa"
+                    alt="Logo Github"
                     width={124}
                     height={30}
                     priority

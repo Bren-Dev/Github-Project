@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { useGitHubRepos } from "../hooks/UseGithubRepos";
 
 export default function GitHubRepositories() {
@@ -13,13 +13,8 @@ export default function GitHubRepositories() {
     const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
     const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
 
-    const [languages, setLanguages] = useState<string[]>(["All"]);
-
-    useEffect(() => {
-        const uniqueLanguages = Array.from(
-            new Set(repos.map(repo => repo.language).filter(Boolean))
-        );
-        setLanguages(["All", ...uniqueLanguages]);
+    const languages = useMemo(() => {
+        return ["All", ...Array.from(new Set(repos.map(repo => repo.language).filter(Boolean)))];
     }, [repos]);
 
     const typeOptions = ["All", "Sources", "Forks", "Archived", "Mirrors"];
@@ -35,6 +30,8 @@ export default function GitHubRepositories() {
 
         return matchesLanguage && matchesType;
     });
+
+    console.log(filteredRepos)
 
     return (
         <div className="p-6 bg-white">

@@ -1,6 +1,7 @@
-'use client'
+'use client';
 
 import useSWR from "swr";
+import { useGitHubStore } from "../store/githubStore";
 
 interface GitHubUser {
     avatar_url: string;
@@ -12,19 +13,20 @@ interface GitHubUser {
     html_url: string;
 }
 
-const GITHUB_USERNAME = "Bren-Dev";
-
-const fetcher = (url: string) =>
-    fetch(url).then((res) => {
+const fetcher = (url: string, token: string) =>
+    fetch(url, {
+        headers: { Authorization: `token ${token}` },
+    }).then((res) => {
         if (!res.ok) throw new Error("Erro ao buscar perfil");
         return res.json();
     });
 
 export default function ProfileSection() {
+    const { username, token } = useGitHubStore();
+
     const { data: user, error, isLoading } = useSWR<GitHubUser>(
-        `https://api.github.com/users/${GITHUB_USERNAME}`,
-        fetcher,
-        { revalidateOnFocus: true }
+        username ? [`https://api.github.com/users/${username}`, token] : null,
+        ([url, token]) => fetcher(url, token)
     );
 
     if (isLoading) return <p>Carregando...</p>;

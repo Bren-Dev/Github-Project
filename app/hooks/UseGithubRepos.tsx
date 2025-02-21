@@ -11,6 +11,9 @@ interface GitHubRepo {
     stargazers_count: number;
     forks_count: number;
     language: string | null;
+    fork: boolean;
+    archived: boolean;
+    mirror_url: string | null;
 }
 
 const GITHUB_TOKEN = "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";
