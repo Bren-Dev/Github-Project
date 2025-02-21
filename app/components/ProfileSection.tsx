@@ -1,7 +1,6 @@
 'use client';
 
 import useSWR from "swr";
-import { useGitHubStore } from "../store/githubStore";
 
 interface GitHubUser {
     avatar_url: string;
@@ -22,7 +21,8 @@ const fetcher = (url: string, token: string) =>
     });
 
 export default function ProfileSection() {
-    const { username, token } = useGitHubStore();
+    const username = process.env.NEXT_PUBLIC_GITHUB_USERNAME
+    const token = process.env.NEXT_PUBLIC_GITHUB_TOKEN
 
     const { data: user, error, isLoading } = useSWR<GitHubUser>(
         username ? [`https://api.github.com/users/${username}`, token] : null,
