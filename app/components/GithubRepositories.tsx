@@ -16,23 +16,29 @@ export default function GitHubRepositories() {
     const [searchTerm, setSearchTerm] = useState("");
 
     const languages = useMemo(() => {
-        return ["All", ...Array.from(new Set(repos.map(repo => repo.language).filter(Boolean)))];
-    }, [repos]);
+        const allLanguages = repos.concat(starredRepos).map(repo => repo.language).filter(Boolean);
+        return ["All", ...Array.from(new Set(allLanguages))];
+    }, [repos, starredRepos]);
 
     const typeOptions = ["All", "Sources", "Forks", "Archived", "Mirrors"];
 
-    const filteredRepos = repos.filter(repo => {
-        const matchesLanguage = selectedLanguage === "All" || repo.language === selectedLanguage;
-        const matchesType =
-            selectedType === "All" ||
-            (selectedType === "Sources" && !repo.fork) ||
-            (selectedType === "Forks" && repo.fork) ||
-            (selectedType === "Archived" && repo.archived) ||
-            (selectedType === "Mirrors" && repo.mirror_url);
-        const matchesSearch = repo.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const filterRepos = (repos: any[]) => {
+        return repos.filter(repo => {
+            const matchesLanguage = selectedLanguage === "All" || repo.language === selectedLanguage;
+            const matchesType =
+                selectedType === "All" ||
+                (selectedType === "Sources" && !repo.fork) ||
+                (selectedType === "Forks" && repo.fork) ||
+                (selectedType === "Archived" && repo.archived) ||
+                (selectedType === "Mirrors" && repo.mirror_url);
+            const matchesSearch = repo.name.toLowerCase().includes(searchTerm.toLowerCase());
 
-        return matchesLanguage && matchesType && matchesSearch;
-    });
+            return matchesLanguage && matchesType && matchesSearch;
+        });
+    };
+
+    const filteredRepos = filterRepos(repos);
+    const filteredStarredRepos = filterRepos(starredRepos);
 
     return (
         <div className="bg-white">
@@ -147,7 +153,7 @@ export default function GitHubRepositories() {
                         </div>
                     ))
                 ) : (
-                    loadingStarred ? <p>Carregando...</p> : errorStarred ? <p className="text-red-500">{errorStarred}</p> : starredRepos.map(repo => (
+                    loadingStarred ? <p>Carregando...</p> : errorStarred ? <p className="text-red-500">{errorStarred}</p> : filteredStarredRepos.map(repo => (
                         <div key={repo.id} className="border-b pb-4">
                             <h3 className="font-semibold">
                                 {repo.owner.login} /{" "}
