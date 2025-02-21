@@ -33,13 +33,13 @@ export default function ProfileSection() {
     if (error) return <p className="text-red-500">{error.message}</p>;
 
     return (
-        <section className="flex flex-col items-center text-center py-6 bg-white rounded-lg w-80">
+        <section className="flex flex-col items-center bg-white rounded-lg ">
             <img
-                className="w-24 h-24 rounded-full border-4 border-white shadow-md"
+                className="w-[150px] h-[150px] rounded-full"
                 src={user?.avatar_url || "https://via.placeholder.com/96"}
                 alt={user?.name || "Usuário"}
             />
-            <h2 className="text-lg font-semibold mt-4">{user?.name || "Nome não disponível"}</h2>
+            <h2 className="text-lg font-semibold mt-4">{user?.name || username}</h2>
             <p className="text-gray-600 text-sm">{user?.bio || "Sem biografia"}</p>
             <div className="mt-4 space-y-2 text-blue-500 text-sm">
                 <p>📄 Magazord - plataforma</p>

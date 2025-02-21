@@ -1,6 +1,7 @@
 'use client'
 import { useMemo, useState } from "react";
 import { useGitHubRepos } from "../hooks/UseGithubRepos";
+import Image from "next/image";
 
 export default function GitHubRepositories() {
     const username = "Bren-Dev";
@@ -12,6 +13,7 @@ export default function GitHubRepositories() {
     const [selectedType, setSelectedType] = useState<string>("All");
     const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
     const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
 
     const languages = useMemo(() => {
         return ["All", ...Array.from(new Set(repos.map(repo => repo.language).filter(Boolean)))];
@@ -27,41 +29,50 @@ export default function GitHubRepositories() {
             (selectedType === "Forks" && repo.fork) ||
             (selectedType === "Archived" && repo.archived) ||
             (selectedType === "Mirrors" && repo.mirror_url);
+        const matchesSearch = repo.name.toLowerCase().includes(searchTerm.toLowerCase());
 
-        return matchesLanguage && matchesType;
+        return matchesLanguage && matchesType && matchesSearch;
     });
 
-    console.log(filteredRepos)
-
     return (
-        <div className="p-6 bg-white">
-            <div className="flex items-center space-x-6 border-b pb-3 ">
+        <div className="bg-white">
+            <div className="flex items-center pb-[57px] gap-[57px]">
                 <button
                     onClick={() => setActiveTab("repos")}
-                    className={`flex items-center space-x-1 ${activeTab === "repos" ? "font-semibold border-b-2 border-red-500" : "text-gray-500"}`}
+                    className={`flex items-center space-x-1 ${activeTab === "repos" ? "font-semibold border-b-2 border-[#FD8C73]" : "text-gray-500"}`}
                 >
-                    📂 Repositories <span className="bg-gray-200 text-xs px-2 py-1 rounded-full">{repos.length}</span>
+                    <Image src="/bookIcon.svg" alt="Icone Livro" width={18} height={20} priority />
+                    Repositories<span className="bg-gray-200 text-xs px-2 py-1 rounded-full">{repos.length}</span>
                 </button>
 
                 <button
                     onClick={() => setActiveTab("starred")}
-                    className={`flex items-center space-x-1 ${activeTab === "starred" ? "font-semibold border-b-2 border-red-500" : "text-gray-500"}`}
+                    className={`flex items-center space-x-1 ${activeTab === "starred" ? "font-semibold border-b-2 border-[#FD8C73]" : "text-gray-500"}`}
                 >
-                    ⭐ Starred <span className="bg-gray-200 text-xs px-2 py-1 rounded-full">{starredRepos.length}</span>
+                    <Image src="/starIcon.svg" alt="Icone Estrela" width={18} height={20} priority />
+                    Starred <span className="bg-gray-200 text-xs px-2 py-1 rounded-full">{starredRepos.length}</span>
                 </button>
             </div>
 
-            <div className="flex items-center justify-between mt-4">
-                <input
-                    type="text"
-                    placeholder="Search Here"
-                    className="border px-4 py-2 w-full max-w-md rounded-md"
-                />
+            <div className="flex items-center justify-between">
+                <div className="flex gap-[16px] border-b border-[#F4F4F4] pb-[6px] w-[444px]">
+                    <Image src="/searchIcon.svg" alt="Icone Procurar" width={24} height={24} priority />
+                    <input
+                        type="text"
+                        placeholder="Search Here"
+                        className="outline-none w-full"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </div>
                 <div className="flex space-x-3 relative">
                     <div className="relative">
-                        <button className="bg-blue-600 text-white px-4 py-2 rounded-md"
-                            onClick={() => setIsTypeDropdownOpen(!isTypeDropdownOpen)}>
-                            Type
+                        <button
+                            className="bg-[linear-gradient(89.89deg,#0056A6_-30.01%,#0587FF_125.65%)] w-[105px] h-10 flex items-center px-[14px] font-normal text-lg leading-[21.09px] text-white rounded-[42px] gap-[16px]"
+                            onClick={() => setIsTypeDropdownOpen(!isTypeDropdownOpen)}
+                        >
+                            <Image src="/arrowDownIcon.svg" alt="Icone Seta Para Baixo" width={12} height={6} priority />
+                            <span>Type</span>
                         </button>
 
                         {isTypeDropdownOpen && (
@@ -83,9 +94,12 @@ export default function GitHubRepositories() {
                     </div>
 
                     <div className="relative">
-                        <button className="bg-blue-600 text-white px-4 py-2 rounded-md"
-                            onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}>
-                            Language
+                        <button
+                            className="bg-[linear-gradient(89.89deg,#0056A6_-30.01%,#0587FF_125.65%)] w-[145px] h-[40px] flex items-center px-[14px] font-normal text-lg leading-[21.09px] text-white rounded-[42px] gap-[16px]"
+                            onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
+                        >
+                            <Image src="/arrowDownIcon.svg" alt="Icone Seta Para Baixo" width={12} height={6} priority />
+                            <span>Language</span>
                         </button>
 
                         {isLanguageDropdownOpen && (
@@ -114,15 +128,21 @@ export default function GitHubRepositories() {
                         <div key={repo.id} className="border-b pb-4">
                             <h3 className="font-semibold">
                                 {repo.owner.login} /{" "}
-                                <a href={repo.html_url} target="_blank" className="text-blue-600">
+                                <a href={repo.html_url} target="_blank" className="text-[#0587FF]">
                                     {repo.name}
                                 </a>
                             </h3>
                             <p className="text-gray-500 text-sm">{repo.description || "Sem descrição"}</p>
                             <p className="text-gray-600 text-sm">{repo.language || "Sem linguagem"}</p>
                             <div className="text-gray-600 text-sm flex space-x-4">
-                                <span>⭐ {repo.stargazers_count}</span>
-                                <span>🔗 {repo.forks_count}</span>
+                                <div className="flex gap-2">
+                                    <Image src="/fullStarIcon.svg" alt="Icone Estrela" width={18} height={20} priority />
+                                    <span>{repo.stargazers_count}</span>
+                                </div>
+                                <div className="flex gap-2">
+                                    <Image src="/forkIcon.svg" alt="Icone Fork" width={18} height={20} priority />
+                                    <span>{repo.forks_count}</span>
+                                </div>
                             </div>
                         </div>
                     ))

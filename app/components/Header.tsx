@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Header() {
     return (
-        <header className="bg-[#24292E] text-white py-[21px] flex justify-center ">
+        <header className="bg-[#24292E] text-white py-[21px] md:flex justify-center hidden">
             <div className="flex max-w-[1200px] w-full items-center">
                 <Image
                     src="/logoGithub.svg"
