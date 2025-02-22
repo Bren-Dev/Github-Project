@@ -59,24 +59,24 @@ export default function GitHubRepositories() {
 
     return (
         <div className="bg-white">
-            <div className="flex items-center pb-[55px] gap-[57px]">
+            <div className="flex items-center pb-[55px] gap-[30px] lg:gap-[55px]">
                 <button
                     onClick={() => setActiveTab("repos")}
-                    className={`flex pl-[8px] pb-[8px] items-center space-x-1 ${activeTab === "repos" ? "font-semibold border-b-2 border-[#FD8C73]" : "text-gray-500"}`}
+                    className={`flex pl-[8px] pb-[8px] items-center ${activeTab === "repos" ? "font-semibold border-b-2 border-[#FD8C73]" : "text-gray-500"}`}
                 >
                     <Image src={activeTab === "repos" ? "/activeBookIcon.svg" : "/inactiveBookIcon.svg"} alt="Icone Livro" width={18} height={20} priority />
-                    <span className="pl-[16px] pr-[8px]">Repositories</span>  <span className="border font-normal text-sm leading-[16.41px] text-[#989898] rounded-[59px] border-solid border-[#DBDBDB] bg-[#F8F8F8] py-[4px] px-[16px]">{repos.length}</span>
+                    <span className="lg:pl-[16px] pr-[8px] text-base font-normal lg:text-lg lg:leading-[21.09px]">Repositories</span>  <span className="border font-normal text-sm leading-[16.41px] text-[#989898] rounded-[59px] border-solid border-[#DBDBDB] bg-[#F8F8F8] lg:py-[4px] lg:px-[16px]">{repos.length}</span>
                 </button>
                 <button
                     onClick={() => setActiveTab("starred")}
-                    className={`flex pl-[8px] pb-[8px] items-center space-x-1 ${activeTab === "starred" ? "font-semibold border-b-2 border-[#FD8C73]" : "text-gray-500"}`}
+                    className={`flex pl-[8px] pb-[8px] items-center ${activeTab === "starred" ? "font-semibold border-b-2 border-[#FD8C73]" : "text-gray-500"}`}
                 >
                     <Image src={activeTab === "starred" ? "/activeStarIcon.svg" : "/inactiveStarIcon.svg"} alt="Icone Estrela" width={18} height={20} priority />
-                    <span className="pl-[16px] pr-[8px]">Starred</span>   <span className="border font-normal text-sm leading-[16.41px] text-[#989898] rounded-[59px] border-solid border-[#DBDBDB] bg-[#F8F8F8] py-[4px] px-[16px]">{starredRepos.length}</span>
+                    <span className="lg:pl-[16px] pr-[8px] text-base font-normal lg:text-lg lg:leading-[21.09px]" >Starred</span>   <span className="border font-normal text-sm leading-[16.41px] text-[#989898] rounded-[59px] border-solid border-[#DBDBDB] bg-[#F8F8F8] lg:py-[4px] lg:px-[16px]">{starredRepos.length}</span>
                 </button>
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex flex-row-reverse lg:items-center md:flex-col-reverse lg:flex-row justify-between">
                 <div className="flex gap-[16px] border-b border-[#F4F4F4] pb-[6px] w-[444px]">
                     <Image src="/searchIcon.svg" alt="Icone Procurar" width={24} height={24} priority />
                     <input
@@ -88,7 +88,7 @@ export default function GitHubRepositories() {
                         onKeyDown={handleSearch}
                     />
                 </div>
-                <div className="flex space-x-3">
+                <div className="flex gap-4">
                     <Dropdown
                         label="Type"
                         options={typeOptions}
@@ -110,7 +110,7 @@ export default function GitHubRepositories() {
                 </div>
             </div>
 
-            <section className="space-y-6 mt-6">
+            <section className="lg:mt-10">
                 {activeTab === "repos" ? (
                     loading ? (
                         <p>Carregando...</p>
