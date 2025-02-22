@@ -1,7 +1,8 @@
 import Image from 'next/image';
+import { GitHubRepo } from '../hooks/UseGithubRepos';
 
 interface RepoCardProps {
-    repo: any;
+    repo: GitHubRepo;
     isStarred?: boolean;
 }
 

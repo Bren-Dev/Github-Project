@@ -2,7 +2,7 @@
 
 import useSWR from "swr";
 
-interface GitHubRepo {
+export interface GitHubRepo {
     id: number;
     name: string;
     owner: { login: string };
@@ -25,7 +25,7 @@ const fetcher = (url: string) =>
         return res.json();
     });
 
-export function useGitHubRepos(username: string, starred = false) {
+export function useGitHubRepos(username: string | undefined, starred = false) {
     const url = starred
         ? `https://api.github.com/users/${username}/starred`
         : `https://api.github.com/users/${username}/repos`;

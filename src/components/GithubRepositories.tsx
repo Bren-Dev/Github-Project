@@ -1,12 +1,12 @@
 "use client";
 import { useMemo, useState } from "react";
-import { useGitHubRepos } from "../hooks/UseGithubRepos";
+import { useGitHubRepos, GitHubRepo } from "../hooks/UseGithubRepos";
 import Image from "next/image";
 import Dropdown from "./Dropdown";
 import RepoCard from "./RepoCard";
 
 export default function GitHubRepositories() {
-    const username = "Bren-Dev";
+    const username = process.env.NEXT_PUBLIC_GITHUB_USERNAME;
     const { repos, loading, error } = useGitHubRepos(username);
     const { repos: starredRepos, loading: loadingStarred, error: errorStarred } = useGitHubRepos(username, true);
 
@@ -23,7 +23,7 @@ export default function GitHubRepositories() {
         return ["All", ...Array.from(new Set(allLanguages))];
     }, [repos, starredRepos]);
 
-    const filterRepos = (repos: any[]) => {
+    const filterRepos = (repos: GitHubRepo[]) => {
         return repos.filter((repo) => {
             const matchesLanguage = selectedLanguage === "All" || repo.language === selectedLanguage;
             const matchesType =
