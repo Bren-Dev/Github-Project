@@ -7,13 +7,14 @@ interface DropdownProps {
     onSelect: (option: string) => void;
     isOpen: boolean;
     toggle: () => void;
+    className: string;
 }
 
-export default function Dropdown({ label, options, selected, onSelect, isOpen, toggle }: DropdownProps) {
+export default function Dropdown({ className, label, options, selected, onSelect, isOpen, toggle }: DropdownProps) {
     return (
         <div className="relative">
             <button
-                className="bg-[linear-gradient(89.89deg,#0056A6_-30.01%,#0587FF_125.65%)] w-[145px] h-10 flex items-center px-[14px] font-normal text-lg text-white rounded-[42px] gap-[16px]"
+                className={`bg-[linear-gradient(89.89deg,#0056A6_-30.01%,#0587FF_125.65%)] ${className} flex items-center px-[14px] font-normal text-lg text-white rounded-[42px] gap-[16px]`}
                 onClick={toggle}
             >
                 <Image src="/arrowDownIcon.svg" alt="Icone Seta Para Baixo" width={12} height={6} priority />
@@ -25,13 +26,18 @@ export default function Dropdown({ label, options, selected, onSelect, isOpen, t
                         {options.map((option) => (
                             <li
                                 key={option}
-                                className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${selected === option ? 'font-semibold' : ''}`}
+                                className="cursor-pointer px-4 py-2 hover:bg-gray-100 flex items-center gap-2"
                                 onClick={() => {
                                     onSelect(option);
                                     toggle();
                                 }}
                             >
-                                {selected === option ? '✔ ' : ''}
+                                <input
+                                    type="checkbox"
+                                    checked={selected === option}
+                                    readOnly
+                                    className="form-checkbox h-4 w-4 text-blue-500 rounded"
+                                />
                                 {option}
                             </li>
                         ))}
