@@ -44,20 +44,20 @@ export default function GitHubRepositories() {
 
     return (
         <div className="bg-white">
-            <div className="flex items-center pb-[57px] gap-[57px]">
+            <div className="flex items-center pb-[55px] gap-[57px]">
                 <button
                     onClick={() => setActiveTab("repos")}
-                    className={`flex items-center space-x-1 ${activeTab === "repos" ? "font-semibold border-b-2 border-[#FD8C73]" : "text-gray-500"}`}
+                    className={`flex pl-[8px] pb-[8px] items-center space-x-1 ${activeTab === "repos" ? "font-semibold border-b-2 border-[#FD8C73]" : "text-gray-500"}`}
                 >
-                    <Image src="/bookIcon.svg" alt="Icone Livro" width={18} height={20} priority />
-                    Repositories<span className="bg-gray-200 text-xs px-2 py-1 rounded-full">{repos.length}</span>
+                    <Image src={activeTab === "repos" ? "/activeBookIcon.svg" : "/inactiveBookIcon.svg"} alt="Icone Livro" width={18} height={20} priority />
+                    <span className="pl-[16px] pr-[8px]">Repositories</span>  <span className="border font-normal text-sm leading-[16.41px] text-[#989898] rounded-[59px] border-solid border-[#DBDBDB] bg-[#F8F8F8] py-[4px] px-[16px]">{repos.length}</span>
                 </button>
                 <button
                     onClick={() => setActiveTab("starred")}
-                    className={`flex items-center space-x-1 ${activeTab === "starred" ? "font-semibold border-b-2 border-[#FD8C73]" : "text-gray-500"}`}
+                    className={`flex pl-[8px] pb-[8px] items-center space-x-1 ${activeTab === "starred" ? "font-semibold border-b-2 border-[#FD8C73]" : "text-gray-500"}`}
                 >
-                    <Image src="/starIcon.svg" alt="Icone Estrela" width={18} height={20} priority />
-                    Starred <span className="bg-gray-200 text-xs px-2 py-1 rounded-full">{starredRepos.length}</span>
+                    <Image src={activeTab === "starred" ? "/activeStarIcon.svg" : "/inactiveStarIcon.svg"} alt="Icone Estrela" width={18} height={20} priority />
+                    <span className="pl-[16px] pr-[8px]">Starred</span>   <span className="border font-normal text-sm leading-[16.41px] text-[#989898] rounded-[59px] border-solid border-[#DBDBDB] bg-[#F8F8F8] py-[4px] px-[16px]">{starredRepos.length}</span>
                 </button>
             </div>
 
@@ -80,6 +80,7 @@ export default function GitHubRepositories() {
                         onSelect={setSelectedType}
                         isOpen={isTypeDropdownOpen}
                         toggle={() => setIsTypeDropdownOpen(!isTypeDropdownOpen)}
+                        className="w-[105px] h-10"
                     />
                     <Dropdown
                         label="Language"
@@ -88,6 +89,7 @@ export default function GitHubRepositories() {
                         onSelect={setSelectedLanguage}
                         isOpen={isLanguageDropdownOpen}
                         toggle={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
+                        className="w-[145px] h-10"
                     />
                 </div>
             </div>
