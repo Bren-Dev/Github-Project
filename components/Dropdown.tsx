@@ -21,7 +21,7 @@ export default function Dropdown({ className, label, options, selected, onSelect
                 <span>{label}</span>
             </button>
             {isOpen && (
-                <div className="absolute mt-2 w-48 bg-white border shadow-md rounded-md">
+                <div className="absolute mt-2 w-48 border shadow-md rounded-md bg-[#f2f8fe]" >
                     <ul>
                         {options.map((option) => (
                             <li
@@ -36,7 +36,7 @@ export default function Dropdown({ className, label, options, selected, onSelect
                                     type="checkbox"
                                     checked={selected === option}
                                     readOnly
-                                    className="form-checkbox h-4 w-4 text-blue-500 rounded"
+                                    className="form-checkbox h-4 w-4  text-blue-500 rounded border-white "
                                 />
                                 {option}
                             </li>
