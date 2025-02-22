@@ -1,15 +1,12 @@
 'use client';
 
+import Image from "next/image";
 import useSWR from "swr";
 
 interface GitHubUser {
     avatar_url: string;
     name: string;
     bio: string;
-    location: string;
-    blog: string;
-    twitter_username: string;
-    html_url: string;
 }
 
 const fetcher = (url: string, token: string) =>
@@ -35,17 +32,19 @@ export default function ProfileSection() {
     return (
         <section className="flex flex-col items-center bg-white rounded-lg ">
             <img
-                className="w-[150px] h-[150px] rounded-full"
+                className="md:w-[150px] md:h-[150px] w-[104px] h-[104px] rounded-full"
                 src={user?.avatar_url || "https://via.placeholder.com/96"}
                 alt={user?.name || "Usuário"}
             />
-            <h2 className="text-lg font-semibold mt-4">{user?.name || username}</h2>
+
+            <p className="text-lg font-semibold mt-4">{user?.name || username}</p>
             <p className="text-gray-600 text-sm">{user?.bio || "Sem biografia"}</p>
+            <p className="font-normal text-sm leading-[16.41px] text-[#0587FF] pt-[24px] md:hidden">Informações Adicionais</p>
             <div className="mt-4 space-y-2 text-blue-500 text-sm">
-                <p>📄 Magazord - plataforma</p>
-                <p>📍 {user?.location || "Localização não disponível"}</p>
-                <p>🔗 <a href={user?.blog} target="_blank" rel="noopener noreferrer">{user?.blog || "Sem blog"}</a></p>
-                <p>📷 {user?.twitter_username || "Sem Twitter"}</p>
+                <div className="flex gap-[10px]"> <Image src="/enterpriseIcon.svg" alt="Icone Livro" width={18} height={20} priority /> <p>Magazord - plataforma </p></div>
+                <div className="flex gap-[10px]"> <Image src="/pinIcon.svg" alt="Icone Livro" width={18} height={20} priority /> <p>Rio do Sul - SC</p></div>
+                <div className="flex gap-[10px]"> <Image src="/chainIcon.svg" alt="Icone Livro" width={18} height={20} priority /> <p>Brenda.hub.uok </p></div>
+                <div className="flex gap-[10px]" > <Image src="/instagramIcon.svg" alt="Icone Livro" width={18} height={20} priority /> <p>Brend_ane </p></div>
             </div>
         </section>
     );
