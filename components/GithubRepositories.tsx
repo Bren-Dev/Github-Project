@@ -16,6 +16,7 @@ export default function GitHubRepositories() {
     const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
     const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
+    const [tempSearchTerm, setTempSearchTerm] = useState("");
     const typeOptions = ["All", "Sources", "Forks", "Archived", "Mirrors"];
 
     const languages = useMemo(() => {
@@ -41,6 +42,20 @@ export default function GitHubRepositories() {
     const filteredRepos = filterRepos(repos);
     const filteredStarredRepos = filterRepos(starredRepos);
 
+    const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            setSearchTerm(tempSearchTerm);
+        }
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setTempSearchTerm(value);
+
+        if (value === "") {
+            setSearchTerm("");
+        }
+    };
 
     return (
         <div className="bg-white">
@@ -68,8 +83,9 @@ export default function GitHubRepositories() {
                         type="text"
                         placeholder="Search Here"
                         className="outline-none w-full"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        value={tempSearchTerm}
+                        onChange={handleInputChange}
+                        onKeyDown={handleSearch}
                     />
                 </div>
                 <div className="flex space-x-3">
