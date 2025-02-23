@@ -8,7 +8,7 @@ export default function Home() {
     <div>
       <Header />
       <div className="flex justify-center">
-        <div className="max-w-[1200px] w-full md:gap-[65px] flex flex-col md:flex-row py-[33px] px-[24px] md:px-[0px]">
+        <div className="max-w-[1200px] w-full sm:gap-[65px] flex flex-col sm:flex-row py-[33px] px-[24px]">
           <ProfileSection />
           <GitHubRepositories />
         </div>

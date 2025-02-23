@@ -18,7 +18,7 @@ export default function RepoCard({ repo, isStarred = false }: RepoCardProps) {
             </p>
             <p className="py-[9px] font-normal text-sm leading-[16.41px] text-[#989898]">{repo.description || 'Sem descrição'}</p>
 
-            <div className="text-gray-600 text-sm flex lg:gap-8">
+            <div className="text-gray-600 text-sm flex gap-[30px] lg:gap-8">
                 {isStarred && <p className="font-normal text-sm leading-[16.41px] text-black">{repo.language || 'Sem linguagem'}</p>}
                 <div className="flex gap-2">
                     <Image src="/fullStarIcon.svg" alt="Icone Estrela" width={18} height={20} priority />
