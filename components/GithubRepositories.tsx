@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useGitHubRepos, GitHubRepo } from "../hooks/UseGithubRepos";
 import Image from "next/image";
 import Dropdown from "./Dropdown";
@@ -7,17 +7,18 @@ import RepoCard from "./RepoCard";
 
 export default function GitHubRepositories() {
     const username = process.env.NEXT_PUBLIC_GITHUB_USERNAME;
-    const { repos, loading, error } = useGitHubRepos(username);
+    const { repos, loading: loadingRepos, error: errorRepos } = useGitHubRepos(username);
     const { repos: starredRepos, loading: loadingStarred, error: errorStarred } = useGitHubRepos(username, true);
     const [activeTab, setActiveTab] = useState<"repos" | "starred">("repos");
-    const [selectedLanguage, setSelectedLanguage] = useState<string>("All");
-    const [selectedType, setSelectedType] = useState<string>("All");
+    const [selectedLanguage, setSelectedLanguage] = useState("All");
+    const [selectedType, setSelectedType] = useState("All");
     const [activeDropdown, setActiveDropdown] = useState<"language" | "type" | null>(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [tempSearchTerm, setTempSearchTerm] = useState("");
-    const typeOptions = ["All", "Sources", "Forks", "Archived", "Mirrors"];
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-    const languages = useMemo(() => ["All", ...new Set(repos.concat(starredRepos).map(repo => repo.language).filter(Boolean))], [repos, starredRepos]);
+    const typeOptions = ["All", "Sources", "Forks", "Archived", "Mirrors"];
+    const languages = useMemo(() => ["All", ...new Set([...repos, ...starredRepos].map(repo => repo.language).filter(Boolean))], [repos, starredRepos]);
 
     const filterRepos = (repos: GitHubRepo[]) => repos.filter(repo =>
         (selectedLanguage === "All" || repo.language === selectedLanguage) &&
@@ -29,15 +30,23 @@ export default function GitHubRepositories() {
         repo.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const filteredRepos = filterRepos(repos);
-    const filteredStarredRepos = filterRepos(starredRepos);
+    const filteredRepos = filterRepos(activeTab === "repos" ? repos : starredRepos);
+    const isLoading = activeTab === "repos" ? loadingRepos : loadingStarred;
+    const error = activeTab === "repos" ? errorRepos : errorStarred;
 
     const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && setSearchTerm(tempSearchTerm);
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTempSearchTerm(e.target.value);
-        if (e.target.value === "") setSearchTerm("");
-    };
     const toggleDropdown = (dropdown: "language" | "type") => setActiveDropdown(prev => prev === dropdown ? null : dropdown);
+    const toggleSearch = () => setIsSearchOpen(prev => !prev);
+
+    const searchIconRef = useRef(null);
+    const dropdownsRef = useRef(null);
+
+    useEffect(() => {
+        if (searchIconRef.current && dropdownsRef.current) {
+            searchIconRef.current.classList.toggle('search-icon-animation', isSearchOpen);
+            dropdownsRef.current.classList.toggle('dropdowns-animation', isSearchOpen);
+        }
+    }, [isSearchOpen]);
 
     return (
         <div className="bg-white">
@@ -52,23 +61,50 @@ export default function GitHubRepositories() {
                 ))}
             </div>
 
-            <div className="flex flex-row-reverse lg:items-center sm:flex-col-reverse lg:flex-row justify-between mt-6 sm:mt-0">
-                <div className="flex gap-[16px] border-b border-[#F4F4F4] pb-[6px] w-[444px] mb-[40px] lg:mb-0">
+            <div className="flex flex-row lg:items-center sm:flex-col-reverse lg:flex-row sm:justify-between mt-6 sm:mt-0">
+                <div className="sm:flex hidden gap-[16px] border-b border-[#F4F4F4] pb-[6px] w-[444px] mb-[40px] lg:mb-0">
                     <Image src="/searchIcon.svg" alt="Icone Procurar" width={24} height={24} priority />
-                    <input type="text" placeholder="Search Here" className="outline-none w-full" value={tempSearchTerm} onChange={handleInputChange} onKeyDown={handleSearch} />
+                    <input type="text" placeholder="Search Here" className="outline-none w-full text-[18px]" value={tempSearchTerm} onChange={(e) => setTempSearchTerm(e.target.value)} onKeyDown={handleSearch} />
                 </div>
-                <div className="flex gap-2 lg:gap-4 sm:pb-[28px] lg:pb-0">
-                    {["Type", "Language"].map((label, idx) => (
-                        <Dropdown key={label} label={label} options={idx === 0 ? typeOptions : languages} selected={idx === 0 ? selectedType : selectedLanguage}
-                            onSelect={idx === 0 ? setSelectedType : setSelectedLanguage} isOpen={activeDropdown === (idx === 0 ? "type" : "language")}
-                            toggle={() => toggleDropdown(idx === 0 ? "type" : "language")} className={`lg:w-[${idx === 0 ? 105 : 145}px] lg:h-10 w-[${idx === 0 ? 88 : 120}px] h-8`} />
-                    ))}
+
+                <div className="bg-[#F8F8F8] rounded-lg w-full sm:w-auto py-3 px-2 flex justify-between mb-8 sm:bg-transparent sm:rounded-none sm:py-0 sm:px-0 sm:mb-0">
+                    <div className="flex gap-2 lg:gap-4 sm:pb-[28px] lg:pb-0" ref={dropdownsRef}>
+                        {["Type", "Language"].map((label, idx) => (
+                            <Dropdown
+                                key={label}
+                                label={label}
+                                options={idx === 0 ? typeOptions : languages}
+                                selected={idx === 0 ? selectedType : selectedLanguage}
+                                onSelect={idx === 0 ? setSelectedType : setSelectedLanguage}
+                                isOpen={activeDropdown === (idx === 0 ? "type" : "language")}
+                                toggle={() => toggleDropdown(idx === 0 ? "type" : "language")}
+                                className={`lg:w-[${idx === 0 ? 105 : 145}px] lg:h-10 w-[${idx === 0 ? 88 : 120}px] h-8`}
+                            />
+                        ))}
+                    </div>
+                    <Image
+                        src="/searchBlueIcon.svg"
+                        alt="Icone Procurar"
+                        width={24}
+                        height={24}
+                        priority
+                        className="sm:hidden"
+                        onClick={toggleSearch}
+                        ref={searchIconRef}
+                    />
+                    {isSearchOpen && (
+                        <input
+                            type="text"
+                            placeholder="Type Something Here..."
+                            className="bg-transparent px-3 py-2 outline-none text-[#989898] font-normal text-sm leading-[16.41px] sm:hidden"
+                            value={tempSearchTerm} onChange={(e) => setTempSearchTerm(e.target.value)} onKeyDown={handleSearch}
+                        />
+                    )}
                 </div>
             </div>
 
             <section className="lg:mt-10">
-                {activeTab === "repos" ? (loading ? <p>Carregando...</p> : error ? <p className="text-red-500">{error}</p> : filteredRepos.map(repo => <RepoCard key={repo.id} repo={repo} />))
-                    : loadingStarred ? <p>Carregando...</p> : errorStarred ? <p className="text-red-500">{errorStarred}</p> : filteredStarredRepos.map(repo => <RepoCard key={repo.id} repo={repo} isStarred />)}
+                {isLoading ? <p>Carregando...</p> : error ? <p className="text-red-500">{error}</p> : filteredRepos.map(repo => <RepoCard key={repo.id} repo={repo} isStarred={activeTab === "starred"} />)}
             </section>
         </div>
     );

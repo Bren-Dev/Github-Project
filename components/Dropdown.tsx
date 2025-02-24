@@ -18,7 +18,7 @@ export default function Dropdown({ className, label, options, selected, onSelect
                 onClick={toggle}
             >
                 <Image src="/arrowDownIcon.svg" alt="Icone Seta Para Baixo" width={8} height={4} className='lg:w-[12px] lg:h-[6px]' priority />
-                <span className='font-normal lg:text-lg lg:leading-[21.09px] text-sm leading-[16.41px] text-white'>{label}</span>
+                <span className='font-normal lg:text-lg lg:leading-[21.09px] sm:text-[14px] text-sm leading-[16.41px] text-white'>{label}</span>
             </button>
             {isOpen && (
                 <div className="absolute mt-2 w-48 border shadow-md rounded-md bg-[#f2f8fe]" >
