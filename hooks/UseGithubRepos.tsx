@@ -19,7 +19,7 @@ export interface GitHubRepo {
 
 const fetcher = (url: string) =>
     fetch(url, {
-        headers: { Authorization: `token ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}` },
+        headers: { Authorization: `token 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` },
     }).then((res) => {
         if (!res.ok) throw new Error("Erro ao buscar repositórios");
         return res.json();

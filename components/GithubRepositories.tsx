@@ -6,7 +6,7 @@ import Dropdown from "./Dropdown";
 import RepoCard from "./RepoCard";
 
 export default function GitHubRepositories() {
-    const username = process.env.NEXT_PUBLIC_GITHUB_USERNAME;
+    const username = "Bren-Dev";
     const { repos, loading: loadingRepos, error: errorRepos } = useGitHubRepos(username);
     const { repos: starredRepos, loading: loadingStarred, error: errorStarred } = useGitHubRepos(username, true);
     const [activeTab, setActiveTab] = useState<"repos" | "starred">("repos");
