@@ -82,24 +82,26 @@ export default function GitHubRepositories() {
                             />
                         ))}
                     </div>
-                    <Image
-                        src="/searchBlueIcon.svg"
-                        alt="Icone Procurar"
-                        width={24}
-                        height={24}
-                        priority
-                        className="sm:hidden"
-                        onClick={toggleSearch}
-                        ref={searchIconRef}
-                    />
-                    {isSearchOpen && (
-                        <input
-                            type="text"
-                            placeholder="Type Something Here..."
-                            className="bg-transparent px-3 py-2 outline-none text-[#989898] font-normal text-sm leading-[16.41px] sm:hidden"
-                            value={tempSearchTerm} onChange={(e) => setTempSearchTerm(e.target.value)} onKeyDown={handleSearch}
+                    <div className="flex items-center gap-4">
+                        <Image
+                            src="/searchBlueIcon.svg"
+                            alt="Icone Procurar"
+                            width={24}
+                            height={24}
+                            priority
+                            className="sm:hidden"
+                            onClick={toggleSearch}
+                            ref={searchIconRef}
                         />
-                    )}
+                        {isSearchOpen && (
+                            <input
+                                type="text"
+                                placeholder="Type Something Here..."
+                                className="bg-transparent outline-none text-[#989898] font-normal text-sm leading-[16.41px] sm:hidden"
+                                value={tempSearchTerm} onChange={(e) => setTempSearchTerm(e.target.value)} onKeyDown={handleSearch}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
 
