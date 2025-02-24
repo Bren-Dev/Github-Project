@@ -18,8 +18,10 @@ export default function GitHubRepositories() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
 
     const typeOptions = ["All", "Sources", "Forks", "Archived", "Mirrors"];
-    const languages = useMemo(() => ["All", ...new Set([...repos, ...starredRepos].map(repo => repo.language).filter(Boolean))], [repos, starredRepos]);
-
+    const languages = useMemo(
+        () => ["All", ...new Set([...repos, ...starredRepos].map(repo => repo.language).filter((lang): lang is string => Boolean(lang)))],
+        [repos, starredRepos]
+    );
     const filterRepos = (repos: GitHubRepo[]) => repos.filter(repo =>
         (selectedLanguage === "All" || repo.language === selectedLanguage) &&
         (selectedType === "All" ||
@@ -38,8 +40,8 @@ export default function GitHubRepositories() {
     const toggleDropdown = (dropdown: "language" | "type") => setActiveDropdown(prev => prev === dropdown ? null : dropdown);
     const toggleSearch = () => setIsSearchOpen(prev => !prev);
 
-    const searchIconRef = useRef(null);
-    const dropdownsRef = useRef(null);
+    const searchIconRef = useRef<HTMLImageElement>(null);
+    const dropdownsRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (searchIconRef.current && dropdownsRef.current) {

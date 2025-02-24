@@ -9,7 +9,7 @@ interface GitHubUser {
     name: string;
     bio: string;
 }
-const fetcher = (url: string, token: string) =>
+const fetcher = (url: string, token: string | unknown) =>
     fetch(url, { headers: { Authorization: `token ${token}` } })
         .then(res => res.ok ? res.json() : Promise.reject(new Error("Erro ao buscar perfil")));
 
