@@ -39,12 +39,12 @@ yarn install
 
 A aplicação utiliza um **token de acesso pessoal do GitHub** para autenticar as requisições à API. Siga os passos abaixo para configurá-lo:
 
-1. Abra os arquivos `GithubRepositories.tsx` e `ProfileSection.tsx`.
-2. Substitua o valor das variáveis `username` e `password`:
+1. Crie um arquivo `.env.local`.
+2.  Adicione valor das variáveis `GITHUB_TOKEN` e `GITHUB_USER`:
 
 ```typescript
-const username = "usuario";
-const token = "seu-token";
+GITHUB_TOKEN=seu_token
+GITHUB_USER=seu_user
 ```
 
 🔹 **Nota:** Substitua `seu-token` pelo seu token de acesso pessoal do GitHub. Você pode gerar um token [aqui](https://github.com/settings/tokens). Certifique-se de que o token tenha permissões para acessar repositórios públicos.
@@ -113,7 +113,7 @@ yarn upgrade
 
 - Desafios/problemas com os quais você se deparou durante a execução do projeto.
 
-Um dos problemas que me deparei foi em relação à colocar os tokens em env.local (devido a questões de segurança porque geralmente a gente não expõe esse tipo de informação no código) e após o deploy renderizar certinho. Então optei por colocar diretamente no código mesmo.
+Um dos desafios foi a questão do token com relação a segurança do github, eu ainda não havia configurado essas variáveis no vercel, foi um desafio ^^ 
 
 - Maneiras através das quais você pode melhorar a aplicação, seja em performance, estrutura ou padrões.
 
