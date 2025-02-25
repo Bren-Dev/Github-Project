@@ -22,6 +22,7 @@ export default function GitHubRepositories() {
         () => ["All", ...new Set([...repos, ...starredRepos].map(repo => repo.language).filter((lang): lang is string => Boolean(lang)))],
         [repos, starredRepos]
     );
+
     const filterRepos = (repos: GitHubRepo[]) => repos.filter(repo =>
         (selectedLanguage === "All" || repo.language === selectedLanguage) &&
         (selectedType === "All" ||
@@ -36,7 +37,12 @@ export default function GitHubRepositories() {
     const isLoading = activeTab === "repos" ? loadingRepos : loadingStarred;
     const error = activeTab === "repos" ? errorRepos : errorStarred;
 
-    const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && setSearchTerm(tempSearchTerm);
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value);
+    };
+    const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && setSearchTerm(tempSearchTerm);
+
+
     const toggleDropdown = (dropdown: "language" | "type") => setActiveDropdown(prev => prev === dropdown ? null : dropdown);
     const toggleSearch = () => setIsSearchOpen(prev => !prev);
 
@@ -66,7 +72,7 @@ export default function GitHubRepositories() {
             <div className="flex flex-row lg:items-center sm:flex-col-reverse lg:flex-row sm:justify-between mt-6 sm:mt-0">
                 <div className="sm:flex hidden gap-[16px] border-b border-[#C4C4C4] pb-[6px] w-[444px] mb-[40px] lg:mb-0">
                     <Image src="/searchIcon.svg" alt="Icone Procurar" width={24} height={24} priority />
-                    <input type="text" placeholder="Search Here" className="outline-none w-full text-[18px] text-[#989898]" value={tempSearchTerm} onChange={(e) => setTempSearchTerm(e.target.value)} onKeyDown={handleSearch} />
+                    <input type="text" placeholder="Search Here" className="outline-none w-full text-[18px] text-[#989898]" value={tempSearchTerm} onChange={(e) => setTempSearchTerm(e.target.value)} onKeyDown={handleSearchKeyDown} />
                 </div>
 
                 <div className="bg-[#F8F8F8] rounded-lg w-full sm:w-auto py-3 px-2 flex justify-between mb-8 sm:bg-transparent sm:rounded-none sm:py-0 sm:px-0 sm:mb-0">
@@ -100,7 +106,8 @@ export default function GitHubRepositories() {
                                 type="text"
                                 placeholder="Type Something Here..."
                                 className="bg-transparent outline-none text-[#989898] font-normal text-sm leading-[16.41px] sm:hidden"
-                                value={tempSearchTerm} onChange={(e) => setTempSearchTerm(e.target.value)} onKeyDown={handleSearch}
+                                value={tempSearchTerm}
+                                onChange={handleSearchChange}
                             />
                         )}
                     </div>
