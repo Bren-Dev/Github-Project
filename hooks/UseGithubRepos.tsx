@@ -16,10 +16,11 @@ export interface GitHubRepo {
     mirror_url: string | null;
 }
 
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 const fetcher = (url: string) =>
     fetch(url, {
-        headers: { Authorization: `token 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` },
+        headers: { Authorization: `token ${GITHUB_TOKEN}` },
     }).then((res) => {
         if (!res.ok) throw new Error("Erro ao buscar repositórios");
         return res.json();

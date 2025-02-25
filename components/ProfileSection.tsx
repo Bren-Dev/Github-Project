@@ -20,8 +20,8 @@ const infoUser = [
     { src: "/instagramIcon.svg", alt: "Icone Livro", text: "Brend_ane" }
 ]
 export default function ProfileSection() {
-    const username = "Bren-Dev";
-    const token = "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";
+    const username = process.env.GITHUB_USER;
+    const token = process.env.GITHUB_TOKEN;
     const { data: user, error, isLoading } = useSWR<GitHubUser>(
         username ? [`https://api.github.com/users/${username}`, token] : null,
         ([url, token]) => fetcher(url, token)
