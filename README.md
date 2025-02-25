@@ -43,8 +43,8 @@ A aplicação utiliza um **token de acesso pessoal do GitHub** para autenticar a
 2.  Adicione valor das variáveis `GITHUB_TOKEN` e `GITHUB_USER`:
 
 ```typescript
-GITHUB_TOKEN=seu_token
-GITHUB_USER=seu_user
+NEXT_PUBLIC_GITHUB_TOKEN=seu_token
+NEXT_PUBLIC_GITHUB_USER=seu_user
 ```
 
 🔹 **Nota:** Substitua `seu-token` pelo seu token de acesso pessoal do GitHub. Você pode gerar um token [aqui](https://github.com/settings/tokens). Certifique-se de que o token tenha permissões para acessar repositórios públicos.
