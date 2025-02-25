@@ -18,7 +18,7 @@ export default function Dropdown({ className, label, options, selected, onSelect
     return (
         <div className="relative">
             <button
-                className={`bg-[linear-gradient(89.89deg,#0056A6_-30.01%,#0587FF_125.65%)] ${className} flex items-center px-[14px] font-normal text-lg text-white rounded-[42px] gap-[10px] lg:gap-[16px]`}
+                className={`bg-[linear-gradient(89.89deg,#0056A6_-30.01%,#0587FF_125.65%)] ${className} flex items-center px-[14px] font-normal text-lg text-white rounded-[42px] gap-[10px] lg:gap-[16px] `}
                 onClick={toggle}
             >
                 <Image src="/arrowDownIcon.svg" alt="Icone Seta Para Baixo" width={8} height={4} className='lg:w-[12px] lg:h-[6px]' priority />

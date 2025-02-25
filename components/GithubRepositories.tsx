@@ -64,9 +64,9 @@ export default function GitHubRepositories() {
             </div>
 
             <div className="flex flex-row lg:items-center sm:flex-col-reverse lg:flex-row sm:justify-between mt-6 sm:mt-0">
-                <div className="sm:flex hidden gap-[16px] border-b border-[#F4F4F4] pb-[6px] w-[444px] mb-[40px] lg:mb-0">
+                <div className="sm:flex hidden gap-[16px] border-b border-[#C4C4C4] pb-[6px] w-[444px] mb-[40px] lg:mb-0">
                     <Image src="/searchIcon.svg" alt="Icone Procurar" width={24} height={24} priority />
-                    <input type="text" placeholder="Search Here" className="outline-none w-full text-[18px]" value={tempSearchTerm} onChange={(e) => setTempSearchTerm(e.target.value)} onKeyDown={handleSearch} />
+                    <input type="text" placeholder="Search Here" className="outline-none w-full text-[18px] text-[#989898]" value={tempSearchTerm} onChange={(e) => setTempSearchTerm(e.target.value)} onKeyDown={handleSearch} />
                 </div>
 
                 <div className="bg-[#F8F8F8] rounded-lg w-full sm:w-auto py-3 px-2 flex justify-between mb-8 sm:bg-transparent sm:rounded-none sm:py-0 sm:px-0 sm:mb-0">

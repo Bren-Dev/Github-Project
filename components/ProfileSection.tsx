@@ -43,7 +43,7 @@ export default function ProfileSection() {
                     <div className="absolute left-[70%] bottom-[1%] flex items-center justify-center w-[27px] h-[27px] md:w-10 md:h-10 rounded-full shadow-[0px_0px_16px_0px_#4F4F5026] text-[10px] md:text-[18px] bg-white">👽</div>
                 </div>
                 <p className="text-xl lg:text-2xl font-bold text-neutral-800 mt-4 lg:mt-6">{user?.name || username}</p>
-                <p className=" text-[12px] leading-[14.06px] lg:text-base text-[#989898] mt-1 max-w-[261px] text-center">{user?.bio || "Head development team Front-End Magazord - Tagged (#BZ)"}</p>
+                <p className=" text-[12px] leading-[14.06px] lg:text-base text-[#989898] mt-1 max-w-[261px] text-center lg:font-normal">{user?.bio || "Head development team Front-End Magazord - Tagged (#BZ)"}</p>
                 <div className="flex flex-col items-center gap-[11px] sm:hidden" onClick={() => setIsExpanded(!isExpanded)}>
                     <p className="text-sm text-[#0587FF] pt-[24px]">Informações Adicionais</p>
                     <button>
