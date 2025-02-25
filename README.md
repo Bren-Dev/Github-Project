@@ -113,7 +113,7 @@ yarn upgrade
 
 - Desafios/problemas com os quais você se deparou durante a execução do projeto.
 
-Um dos desafios foi a questão do token com relação a segurança do github, eu ainda não havia configurado essas variáveis no vercel, foi um desafio ^^ 
+Um dos desafios foi a questão do token com relação a segurança do github, eu ainda não havia configurado essas variáveis no vercel, foi um problema para mim ^^ 
 
 - Maneiras através das quais você pode melhorar a aplicação, seja em performance, estrutura ou padrões.
 
