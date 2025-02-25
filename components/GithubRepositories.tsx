@@ -37,11 +37,11 @@ export default function GitHubRepositories() {
     const isLoading = activeTab === "repos" ? loadingRepos : loadingStarred;
     const error = activeTab === "repos" ? errorRepos : errorStarred;
 
+    const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && setSearchTerm(tempSearchTerm);
+
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
     };
-    const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && setSearchTerm(tempSearchTerm);
-
 
     const toggleDropdown = (dropdown: "language" | "type") => setActiveDropdown(prev => prev === dropdown ? null : dropdown);
     const toggleSearch = () => setIsSearchOpen(prev => !prev);
@@ -106,7 +106,7 @@ export default function GitHubRepositories() {
                                 type="text"
                                 placeholder="Type Something Here..."
                                 className="bg-transparent outline-none text-[#989898] font-normal text-sm leading-[16.41px] sm:hidden"
-                                value={tempSearchTerm}
+                                value={searchTerm}
                                 onChange={handleSearchChange}
                             />
                         )}
